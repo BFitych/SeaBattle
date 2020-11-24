@@ -134,3 +134,98 @@ void PrintFieldView(std::vector<std::vector<char>>& field_view, SHORT x, SHORT y
 		SetCursor(x, y);
 	}
 }
+
+void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, SHORT y, char chr, std::vector<std::vector<char>>& field_view, char symb)
+{
+	size_t x_step = 2;
+	if (field_view.size() == 11)
+	{
+		x_step = 1;
+	}
+	if (chr == 'd' || chr == 'D')
+	{
+		bool checker = true;
+		for (auto& item : coords_safe)
+		{
+			if (item.first > (x + 20))
+			{
+				checker = false;
+			}
+		}
+		if (checker)
+		{
+			for (auto item = coords_safe.rbegin(); item != coords_safe.rend(); ++item) {
+				SetCursor(item->first, item->second);
+				std::cout << field_view[item->second - y][item->first - x];
+				item->first += x_step;
+				SetCursor(item->first, item->second);
+				std::cout << symb;
+			}
+		}
+	}
+	else if (chr == 'a' || chr == 'A')
+	{
+		bool checker = true;
+		for (auto& item : coords_safe)
+		{
+			if (item.first < x + 4)
+			{
+				checker = false;
+			}
+		}
+		if (checker) {
+			for (auto& item : coords_safe) {
+				SetCursor(item.first, item.second);
+				std::cout << field_view[item.second - y][item.first - x];
+				item.first -= x_step;
+				SetCursor(item.first, item.second);
+				std::cout << symb;
+			}
+		}
+	}
+	else if (chr == 'w' || chr == 'W')
+	{
+		bool checker = true;
+		for (auto& item : coords_safe)
+		{
+			if (item.second < (y + 3))
+			{
+				checker = false;
+			}
+		}
+		if (checker) {
+			for (auto& item : coords_safe) {
+				SetCursor(item.first, item.second);
+				std::cout << field_view[item.second - y][item.first - x];
+				--item.second;
+				SetCursor(item.first, item.second);
+				std::cout << symb;
+			}
+		}
+	}
+	else if (chr == 's' || chr == 'S')
+	{
+		bool checker = true;
+		for (auto& item : coords_safe)
+		{
+			if (item.second > (y + 10))
+			{
+				checker = false;
+			}
+		}
+		if (checker)
+		{
+			for (auto item = coords_safe.rbegin(); item != coords_safe.rend(); ++item) {
+				SetCursor(item->first, item->second);
+				std::cout << field_view[item->second - y][item->first - x];
+				++item->second;
+				SetCursor(item->first, item->second);
+				std::cout << symb;
+			}
+		}
+
+
+	}
+	SetCursor(30, 21);
+	std::cout << "                                                                                 ";
+}

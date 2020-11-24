@@ -19,13 +19,13 @@ public:
 	bool SetTwoCoords(const uint16_t Xs, const uint16_t Ys, const uint16_t Xf, const uint16_t Yf, uint16_t& sc);
 	bool SetThreeCoords(const uint16_t Xs, const uint16_t Ys, const uint16_t Xf, const uint16_t Yf, uint16_t& sc);
 	bool SetFourCoords(const uint16_t Xs, const uint16_t Ys, const uint16_t Xf, const uint16_t Yf, uint16_t& sc);
-
+	void ShootMoving(const field& another_field, uint16_t& X, uint16_t& Y);
 	field GetField();
 	coordsafe GetCoordinates();
 
 	bool ComputerShoot();
 
-	bool Shoot();
+	bool Shoot(const field& another_field);
 
 	void SetShipsCoords();
 	void SetShipCoords_2_0();

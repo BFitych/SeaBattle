@@ -1,6 +1,5 @@
 #include "mainClasses.h"
 
-
  YourBattlefield:: YourBattlefield()
 	{
 		Bfield = GenField(11);
@@ -293,24 +292,62 @@
 		return ret;
 	}
 
-	bool YourBattlefield::Shoot()
+	void YourBattlefield::ShootMoving(const field& another_field, uint16_t& X, uint16_t& Y)
+	{
+		static std::pair<size_t, size_t> coordp = { 6, 6 };
+		char memory = Gfield[coordp.second][coordp.first];
+		char symb = '+';
+		char chr = ' ';
+		Gfield[coordp.second][coordp.first] = symb;
+		while (chr != 13)
+		{
+			SetCursor(0, 0);
+			PrintFields(another_field, Gfield, 0);
+			Gfield[coordp.second][coordp.first] = symb;
+			chr = _getch();
+			if ((chr == 'w' || chr == 'W') && coordp.second != 1)
+			{
+				Gfield[coordp.second--][coordp.first] = memory;
+				memory = Gfield[coordp.second][coordp.first];
+				Gfield[coordp.second][coordp.first] = symb;
+			}
+			else if ((chr == 's' || chr == 'S') && coordp.second != 10)
+			{
+				Gfield[coordp.second++][coordp.first] = memory;
+				memory = Gfield[coordp.second][coordp.first];
+				Gfield[coordp.second][coordp.first] = symb;
+			}
+			else if ((chr == 'a' || chr == 'A') && coordp.first != 1)
+			{
+				Gfield[coordp.second][coordp.first--] = memory;
+				memory = Gfield[coordp.second][coordp.first];
+				Gfield[coordp.second][coordp.first] = symb;
+			}
+			else if ((chr == 'd' || chr == 'D') && coordp.first != 10)
+			{
+				Gfield[coordp.second][coordp.first++] = memory;
+				memory = Gfield[coordp.second][coordp.first];
+				Gfield[coordp.second][coordp.first] = symb;
+			}
+			else if (chr == 13)
+			{
+				X = coordp.first;
+				Y = coordp.second;
+				Gfield[Y][X] = memory;
+			}
+		}
+	}
+
+	bool YourBattlefield::Shoot(const field& another_field)
 	{
 		if (destroyed_count == 20) { throw std::exception("YOU WON"); }
 		uint16_t X, Y;
 		bool chk = false;
 		bool ret = false;
+		
 		while (!chk)
 		{
-			SetCursor(0, 15);
-			std::cout << "\rInput coordinates: " << "X " << "Y";
-			SetCursor(19, 16);
-			std::cin >> X;
-			SetCursor(21, 16);
-			std::cin >> Y;
-			SetCursor(18, 16);
-			std::cin.clear();
-
-			std::cout << "            ";
+			ShootMoving(another_field, X, Y);
 			if (X <= 10 && X > 0 && Y <= 10 && Y > 0 && Gfield.at(Y).at(X) != '#' && Gfield.at(Y).at(X) != '.')
 			{
 				if (Bfield.at(Y).at(X) == '#') {
@@ -347,6 +384,7 @@
 				SetCursor(0, 17);
 				std::cout << "                                                    \r";
 				std::cout << "Invalid coordinates or their format";
+
 			}
 		}
 		return ret;
@@ -356,20 +394,7 @@
 	{
 		std::vector<std::pair<SHORT, SHORT>> coords_safe;
 
-		std::vector<std::vector<char>> field_view =
-		{ {'#','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','#'},
-			{'|', ' ', ' ', '1', ' ', '2',' ', '3',' ', '4',' ', '5',' ', '6',' ', '7',' ', '8',' ', '9',' ', 'l', '|'},
-			{'|','1',' ', '.',' ', '.', ' ','.', ' ','.', ' ','.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.', '|' },
-			{'|','2',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','3',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','4',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','5',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','6',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','7',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','8',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','9',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'|','l',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.',' ', '.' , '|'},
-			{'#','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','=','#'} };
+		std::vector<std::vector<char>> field_view = GenField(14);
 
 		SHORT x = 45, y = 7;
 		SetCursor(35, 3);
@@ -397,101 +422,8 @@
 		{
 			if (_kbhit()) {
 				char chr = _getch();
-				if (chr == 'd' || chr == 'D')
-				{
-					bool checker = true;
-					for (auto& item : coords_safe)
-					{
-						if (item.first > (x + 20))
-						{
-							checker = false;
-						}
-					}
-					if (checker)
-					{
-						for (auto item = coords_safe.rbegin(); item != coords_safe.rend(); ++item) {
-							SetCursor(item->first, item->second);
-							std::cout << field_view[item->second - y][item->first - x];
-							item->first += 2;
-							SetCursor(item->first, item->second);
-							std::cout << '#';
-						}
-					}
-
-					SetCursor(30, 21);
-					std::cout << "                                                                                 ";
-				}
-				else if (chr == 'a' || chr == 'A')
-				{
-					bool checker = true;
-					for (auto& item : coords_safe)
-					{
-						if (item.first < x + 4)
-						{
-							checker = false;
-						}
-					}
-					if (checker) {
-						for (auto& item : coords_safe) {
-							SetCursor(item.first, item.second);
-							std::cout << field_view[item.second - y][item.first - x];
-							item.first -= 2;
-							SetCursor(item.first, item.second);
-							std::cout << '#';
-						}
-					}
-
-					SetCursor(30, 21);
-					std::cout << "                                                                                 ";
-				}
-				else if (chr == 'w' || chr == 'W')
-				{
-					bool checker = true;
-					for (auto& item : coords_safe)
-					{
-						if (item.second < (y + 3))
-						{
-							checker = false;
-						}
-					}
-					if (checker) {
-						for (auto& item : coords_safe) {
-							SetCursor(item.first, item.second);
-							std::cout << field_view[item.second - y][item.first - x];
-							--item.second;
-							SetCursor(item.first, item.second);
-							std::cout << '#';
-						}
-					}
-
-					SetCursor(30, 21);
-					std::cout << "                                                                                 ";
-				}
-				else if (chr == 's' || chr == 'S')
-				{
-					bool checker = true;
-					for (auto& item : coords_safe)
-					{
-						if (item.second > (y + 10))
-						{
-							checker = false;
-						}
-					}
-					if (checker)
-					{
-						for (auto item = coords_safe.rbegin(); item != coords_safe.rend(); ++item) {
-							SetCursor(item->first, item->second);
-							std::cout << field_view[item->second - y][item->first - x];
-							++item->second;
-							SetCursor(item->first, item->second);
-							std::cout << '#';
-						}
-					}
-
-					SetCursor(30, 21);
-					std::cout << "                                                                                 ";
-				}
-				else if (chr == 'q' || chr == 'Q')
+				MovingCoreFunc(coords_safe, x, y, chr, field_view, '#');
+				if (chr == 'q' || chr == 'Q')
 				{
 					
 					SHORT counter = 0;
@@ -663,10 +595,6 @@
 				else if (chr == '1' || chr == '2' || chr == '3' || chr == '4')
 				{
 					ChooseShip(chr, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips);
-				}
-				else
-				{
-					_getch();
 				}
 			}
 		}
@@ -931,3 +859,5 @@
 
 		}
 	};
+
+	

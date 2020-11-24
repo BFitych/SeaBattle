@@ -11,4 +11,4 @@ bool ChooseShip(char chr, std::vector<std::vector<char>>& field_view,
 void PrintFieldView(std::vector<std::vector<char>>& field_view, SHORT x, SHORT Y);
 
 void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, SHORT y,
-	char chr, std::vector<std::vector<char>>& field_view, char symb);
+	std::vector<std::vector<char>>& field_view, char symb);

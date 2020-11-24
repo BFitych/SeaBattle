@@ -305,25 +305,25 @@
 			PrintFields(another_field, Gfield, 0);
 			Gfield[coordp.second][coordp.first] = symb;
 			chr = _getch();
-			if ((chr == 'w' || chr == 'W') && coordp.second != 1)
+			if (GetAsyncKeyState(0x57) && coordp.second != 1)
 			{
 				Gfield[coordp.second--][coordp.first] = memory;
 				memory = Gfield[coordp.second][coordp.first];
 				Gfield[coordp.second][coordp.first] = symb;
 			}
-			else if ((chr == 's' || chr == 'S') && coordp.second != 10)
+			else if (GetAsyncKeyState(0x53) && coordp.second != 10)
 			{
 				Gfield[coordp.second++][coordp.first] = memory;
 				memory = Gfield[coordp.second][coordp.first];
 				Gfield[coordp.second][coordp.first] = symb;
 			}
-			else if ((chr == 'a' || chr == 'A') && coordp.first != 1)
+			else if (GetAsyncKeyState(0x41) && coordp.first != 1)
 			{
 				Gfield[coordp.second][coordp.first--] = memory;
 				memory = Gfield[coordp.second][coordp.first];
 				Gfield[coordp.second][coordp.first] = symb;
 			}
-			else if ((chr == 'd' || chr == 'D') && coordp.first != 10)
+			else if (GetAsyncKeyState(0x44) && coordp.first != 10)
 			{
 				Gfield[coordp.second][coordp.first++] = memory;
 				memory = Gfield[coordp.second][coordp.first];
@@ -417,13 +417,12 @@
 		while (!ChooseShip(size, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) { size = _getch(); }
 		uint16_t sc = 0;
 		InvisibleCursor();
-		
+		char chr;
 		while (true)
 		{
-			if (_kbhit()) {
-				char chr = _getch();
-				MovingCoreFunc(coords_safe, x, y, chr, field_view, '#');
-				if (chr == 'q' || chr == 'Q')
+			chr = _getch();
+			MovingCoreFunc(coords_safe, x, y, field_view, '#');
+				if (GetAsyncKeyState(0x51))
 				{
 					
 					SHORT counter = 0;
@@ -597,7 +596,7 @@
 					ChooseShip(chr, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips);
 				}
 			}
-		}
+		
 }
 
 	void YourBattlefield::SetShipsCoords()

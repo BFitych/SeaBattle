@@ -1,6 +1,6 @@
 #include "SettingMode_2_0.h"
 
-bool ChooseShip(char chr, std::vector<std::vector<char>>& field_view, 
+bool ChooseShip(char chr, std::vector<std::vector<char>>& field_view,
 	std::vector<std::pair<SHORT, SHORT>>& coords_safe, const unsigned x, const unsigned y, uint16_t OneXShips, 
 	uint16_t TwoXShips, uint16_t ThreeXShips , uint16_t FourXShips)
 {
@@ -135,14 +135,14 @@ void PrintFieldView(std::vector<std::vector<char>>& field_view, SHORT x, SHORT y
 	}
 }
 
-void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, SHORT y, char chr, std::vector<std::vector<char>>& field_view, char symb)
+void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, SHORT y, std::vector<std::vector<char>>& field_view, char symb)
 {
 	size_t x_step = 2;
 	if (field_view.size() == 11)
 	{
 		x_step = 1;
 	}
-	if (chr == 'd' || chr == 'D')
+	if (GetAsyncKeyState(0x44))
 	{
 		bool checker = true;
 		for (auto& item : coords_safe)
@@ -163,7 +163,7 @@ void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, 
 			}
 		}
 	}
-	else if (chr == 'a' || chr == 'A')
+	else if (GetAsyncKeyState(0x41))
 	{
 		bool checker = true;
 		for (auto& item : coords_safe)
@@ -183,7 +183,7 @@ void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, 
 			}
 		}
 	}
-	else if (chr == 'w' || chr == 'W')
+	else if (GetAsyncKeyState(0x57))
 	{
 		bool checker = true;
 		for (auto& item : coords_safe)
@@ -203,8 +203,9 @@ void MovingCoreFunc(std::vector<std::pair<SHORT, SHORT>>& coords_safe, SHORT x, 
 			}
 		}
 	}
-	else if (chr == 's' || chr == 'S')
+	else if (GetAsyncKeyState(0x53))
 	{
+		
 		bool checker = true;
 		for (auto& item : coords_safe)
 		{

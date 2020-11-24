@@ -182,3 +182,9 @@ void ChangeColour(size_t c)
 	SetConsoleTextAttribute(hConsole, static_cast<WORD>(c));
 }
 
+void PrintShootInstructions()
+{
+	SetCursor(0, 19);
+	std::cout << "Use keys W A S D to move aim across the field\n";
+	std::cout << "Use Enter to shoot";
+}

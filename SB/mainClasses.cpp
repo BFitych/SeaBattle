@@ -331,8 +331,8 @@
 			}
 			else if (chr == 13)
 			{
-				X = coordp.first;
-				Y = coordp.second;
+				X = static_cast<uint16_t>(coordp.first);
+				Y = static_cast<uint16_t>(coordp.second);
 				Gfield[Y][X] = memory;
 			}
 		}
@@ -344,7 +344,7 @@
 		uint16_t X, Y;
 		bool chk = false;
 		bool ret = false;
-		
+		PrintShootInstructions();
 		while (!chk)
 		{
 			ShootMoving(another_field, X, Y);
@@ -383,7 +383,7 @@
 			{
 				SetCursor(0, 17);
 				std::cout << "                                                    \r";
-				std::cout << "Invalid coordinates or their format";
+				std::cout << "You cannot fire in this place";
 
 			}
 		}
@@ -400,7 +400,7 @@
 		SetCursor(35, 3);
 		std::cout << "Use keys W A S D to move ship across the field   ";
 		SetCursor(35, 4);
-		std::cout << "Use Q to expand ship`s body and Enter to plase it";
+		std::cout << "Use Q to flip ship`s body and Enter to place it  ";
 		SetCursor(35, 5);
 		std::cout << "Use keys 1 2 3 4 to select the size of the ship  ";
 		SetCursor(x, y);

@@ -10,6 +10,7 @@ void Parallel_generation(EnemyBattlefield& bf, char diff)
 
 int main()
 {
+		system("cls");
 		char diff;
 		char mode;
 		CenrtreConsole();
@@ -22,12 +23,12 @@ int main()
 		std::thread t(Parallel_generation, std::ref(ebf), diff);
 		t.detach();
 		
-		/*if (mode == '1') {
+		if (mode == '1') {
 		ybf.SetShipCoords_2_0();
 		}
 		else if (mode == '2') {
 			ybf.SetShipsCoords();
-		}*/
+		}
 		auto start = std::chrono::steady_clock().now();
 		uint16_t counter_1 = 0;
 		uint16_t counter_2 = 0;
@@ -52,18 +53,26 @@ int main()
 					checker_3 = true;
 					auto finish = std::chrono::steady_clock().now();
 					auto res = finish - start;
-					SetCursor(37, 15);
-					std::cout << "Press R to restart or any another button to exit";
-					SetCursor(46, 16);
+					SetCursor(47, 15);
+					std::cout << "Press R to restart or ESC to exit";
+					SetCursor(45, 16);
 					auto time = TimePermutations(static_cast<size_t>(std::chrono::duration_cast<std::chrono::milliseconds>(res).count()));
 					std::cout << "Last game lasted for: " << time.first << "mins and " << time.second << "secs";
-					SetCursor(0, 0);
-					if (_getch() == 'R' || _getch() == 'r')
+
+					char checker;
+					bool decision = false;
+					while (!decision)
 					{
-						main();
-					}
-					else {
-						return 0;
+						checker = _getch();
+						if (checker == 'R' || checker == 'r')
+						{
+							main();
+						}
+						else if (checker == VK_ESCAPE)
+						{
+							system("cls");
+							return 0;
+						}
 					}
 				}
 				if (checker_2) { ++counter_2; }
@@ -80,20 +89,28 @@ int main()
 					system("cls");
 					SetCursor(58, 14);
 					std::cout << e.what();
-					SetCursor(37, 15);
-					std::cout << "Press R to restart or any another button to exit";
-					SetCursor(46, 16);
+					SetCursor(47, 15);
+					std::cout << "Press R to restart or ESC to exit";
+					SetCursor(45, 16);
 					auto finish = std::chrono::steady_clock().now();
 					auto res = finish - start;
 					auto time = TimePermutations(static_cast<size_t>(std::chrono::duration_cast<std::chrono::milliseconds>(res).count()));
 					std::cout << "Last game lasted for: " << time.first << "mins and " << time.second << "secs";
 					SetCursor(0, 0);
-					if (_getch() == 'R' || _getch() == 'r')
+					char checker;
+					bool decision = false;
+					while (!decision)
 					{
-						main();
-					}
-					else {
-						return 0;
+						checker = _getch();
+						if (checker == 'R' || checker == 'r')
+						{
+							main();
+						}
+						else if (checker == VK_ESCAPE)
+						{
+							system("cls");
+							return 0;
+						}
 					}
 				}
 				if (checker_1) {

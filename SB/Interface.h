@@ -15,3 +15,4 @@ void PrintInterface(char& df, char& mode);
 void CenrtreConsole();
 void InvisibleCursor();
 std::pair<size_t, size_t> TimePermutations(size_t millisec);
+void PrintShootInstructions();

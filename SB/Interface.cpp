@@ -100,19 +100,20 @@ void PrintInterface(char& df, char& mode)
 	auto Field = GenField(11);
 	auto Field_2 = Field;
 	
-	
 	system("cls");
-	SetCursor(12, 15);
-	std::cout << "Use keys W A S D to move ship across the field   ";
+	SetCursor(49, 0);
+	std::cout << "Choose ship-placing mode";
 	SetCursor(12, 16);
-	std::cout << "Use Q to expand ship`s body and Enter to plase it";
+	std::cout << "Use keys W A S D to move ship across the field   ";
 	SetCursor(12, 17);
+	std::cout << "Use Q to flip ship`s body and Enter to place it  ";
+	SetCursor(12, 18);
 	std::cout << "          Press 1 to choose this mode            ";
-	SetCursor(65, 15);
-	std::cout << "Input coordinates using your keyboard";
 	SetCursor(65, 16);
+	std::cout << "Input coordinates using your keyboard";
+	SetCursor(65, 17);
 	std::cout << "     Press 2 to choose this mode     ";
-	SetCursor(100, 8);
+	SetCursor(100, 9);
 	std::cout << "Xs Ys Xf Yf";
 	uint16_t steps = 0;
 	uint16_t rpos = 2;
@@ -121,10 +122,10 @@ void PrintInterface(char& df, char& mode)
 		if (_kbhit()) { mode = _getch(); }
 		if (mode == '1' || mode == '2') { choosed = false; }
 		Sleep(250);
-		if (steps == 1) { SetCursor(100, 9); std::cout << '5'; }
-		if (steps == 2) { SetCursor(103, 9); std::cout << '5'; }
-		if (steps == 3) { SetCursor(106, 9); std::cout << '5'; }
-		if (steps == 4) { SetCursor(109, 9); std::cout << '6'; }
+		if (steps == 1) { SetCursor(100, 10); std::cout << '5'; }
+		if (steps == 2) { SetCursor(103, 10); std::cout << '5'; }
+		if (steps == 3) { SetCursor(106, 10); std::cout << '5'; }
+		if (steps == 4) { SetCursor(109, 10); std::cout << '6'; }
 		if (steps == 5)
 		{
 			Field_2[5][5] = '#'; Field_2[6][5] = '#';
@@ -137,19 +138,16 @@ void PrintInterface(char& df, char& mode)
 			
 			Field[6][9] = '#';
 			
-			std::mutex m;
-			m.lock();
 			SetCursor(0, 0);
 			PrintFields(Field, Field_2, 1);
-			m.unlock();
 			Sleep(200);
 			Field[5][9] = '.';
 			Field[6][9] = '.';
 			Field_2[5][5] = '.'; Field_2[6][5] = '.';
-			SetCursor(100, 9); std::cout << ' ';
-			SetCursor(103, 9); std::cout << ' ';
-			SetCursor(106, 9); std::cout << ' ';
-			SetCursor(109, 9); std::cout << ' ';
+			SetCursor(100, 10); std::cout << ' ';
+			SetCursor(103, 10); std::cout << ' ';
+			SetCursor(106, 10); std::cout << ' ';
+			SetCursor(109, 10); std::cout << ' ';
 		}
 
 		SetCursor(0, 0);

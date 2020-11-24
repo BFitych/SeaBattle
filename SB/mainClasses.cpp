@@ -388,7 +388,7 @@
 		std::cout << "Ships with three decks: 2";
 		SetCursor(5, 13);
 		std::cout << "Ships with four decks: 1";
-		unsigned size = _getch();
+		unsigned size = '1';
 		while (!ChooseShip(size, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) { size = _getch(); }
 		uint16_t sc = 0;
 		InvisibleCursor();
@@ -530,15 +530,16 @@
 				{
 				auto coords_safe_copy = coords_safe;
 				fit_to_classic_coords(coords_safe, x, y);
+				bool set = false;
 				if (coords_safe.size() == 1)
 					{
 					if (OneXShips > 0 && SetOneCoords(coords_safe[0].first, coords_safe[0].second, sc))
 					{
-						//27, 10
 						for (auto& item : coords_safe_copy) {
 							field_view[item.second - y][item.first - x] = '#';
 						}
 						SetCursor(26, 10);
+						set = true;
 						std::cout << OneXShips;
 					}
 					else
@@ -557,6 +558,7 @@
 							field_view[item.second - y][item.first - x] = '#';
 						}
 						SetCursor(27, 11);
+						set = true;
 						std::cout << TwoXShips;
 					}
 					else
@@ -576,6 +578,7 @@
 							field_view[item.second - y][item.first - x] = '#';
 						}
 						SetCursor(29, 12);
+						set = true;
 						std::cout << ThreeXShips;
 					}
 					else
@@ -595,6 +598,7 @@
 							field_view[item.second - y][item.first - x] = '#';
 						}
 						SetCursor(28, 13);
+						set = true;
 						std::cout << FourXShips;
 					}
 					else
@@ -605,14 +609,20 @@
 						std::cout << "You can`t plase this ship there!";
 					}
 				}
-				if (OneXShips + TwoXShips + ThreeXShips + FourXShips == 0)
-				{
-					system("cls");
-					break;
-				}
-					coords_safe.clear();
-					size = _getch();
-					while (!ChooseShip(size, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) { size = _getch(); }
+					if (OneXShips + TwoXShips + ThreeXShips + FourXShips == 0)
+					{
+						system("cls");
+						break;
+					}
+					if (set)
+					{
+						coords_safe.clear();
+						std::vector<char> size_vec = { '1', '2', '3', '4' };
+						for (auto& item : size_vec)
+						{
+							if (ChooseShip(item, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) { break; }
+						}
+					}
 					SetCursor(30, 21);
 					std::cout << "                                                                                 ";
 				}

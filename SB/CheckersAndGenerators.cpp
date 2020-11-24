@@ -124,8 +124,6 @@ void SetNerbyCoords(const field& source, field& gamef, uint16_t X, uint16_t Y, c
 	}
 }
 
-
-
 	RandomGenerator :: RandomGenerator()
 	{
 		srand(static_cast<int16_t>(time(NULL)));
@@ -165,7 +163,7 @@ void SetNerbyCoords(const field& source, field& gamef, uint16_t X, uint16_t Y, c
 			std::cout << std::setw(50) << "      Your field       " << std::setw(45) << "   Computer`s field    " << std::endl;
 		}
 		else if (mode == 1) {
-			std::cout << std::setw(50) << "   WASD-moving mode    " << std::setw(45) << " Coordinate-input mode " << std::endl;
+			std::cout << std::endl << std::endl << std::setw(50) << "   WASD-moving mode    " << std::setw(45) << " Coordinate-input mode " << std::endl ;
 		}
 		std::cout << std::setw(50) << "#=====================#" << std::setw(45) << "#=====================#" << std::endl;
 		for (size_t sideOne = 0; sideOne < f1.size(); sideOne++)

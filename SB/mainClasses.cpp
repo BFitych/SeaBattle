@@ -417,6 +417,9 @@
 							std::cout << '#';
 						}
 					}
+
+					SetCursor(30, 21);
+					std::cout << "                                                                                 ";
 				}
 				else if (chr == 'a' || chr == 'A')
 				{
@@ -437,6 +440,9 @@
 							std::cout << '#';
 						}
 					}
+
+					SetCursor(30, 21);
+					std::cout << "                                                                                 ";
 				}
 				else if (chr == 'w' || chr == 'W')
 				{
@@ -457,6 +463,9 @@
 							std::cout << '#';
 						}
 					}
+
+					SetCursor(30, 21);
+					std::cout << "                                                                                 ";
 				}
 				else if (chr == 's' || chr == 'S')
 				{
@@ -478,6 +487,9 @@
 							std::cout << '#';
 						}
 					}
+
+					SetCursor(30, 21);
+					std::cout << "                                                                                 ";
 				}
 				else if (chr == 'q' || chr == 'Q')
 				{
@@ -617,14 +629,36 @@
 					if (set)
 					{
 						coords_safe.clear();
-						std::vector<char> size_vec = { '1', '2', '3', '4' };
+						std::map<char, size_t> size_vec = { {'1', OneXShips}, {'2', TwoXShips}, {'3', ThreeXShips}, {'4', FourXShips} };
 						for (auto& item : size_vec)
 						{
-							if (ChooseShip(item, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) { break; }
+							if (item.second != 0 && ChooseShip(item.first, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips)) 
+							{ break; }
 						}
 					}
-					SetCursor(30, 21);
-					std::cout << "                                                                                 ";
+					else {
+						char size = ' ';
+						switch (coords_safe.size())
+						{
+						case 1:
+							size = '1';
+							break;
+						case 2:
+							size = '2';
+							break;
+						case 3:
+							size = '3';
+							break;
+						case 4:
+							size = '4';
+							break;
+						}
+						coords_safe.clear();
+						ChooseShip(size, field_view, coords_safe, x, y, OneXShips, TwoXShips, ThreeXShips, FourXShips);
+						SetCursor(40, 21);
+						std::cout << "You can`t plase this ship there!";
+
+					}
 				}
 				else if (chr == '1' || chr == '2' || chr == '3' || chr == '4')
 				{
